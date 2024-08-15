@@ -1,13 +1,15 @@
-// index.js
-
 exports.handler = async (event) => {
-  const path = event.rawPath || event.path || "/";
-  console.log(event.rawPath);
-
-  console.log("Event:", JSON.stringify(event, null, 2));
+  // Extract the path from the event object
+  const path = event.path || "/";
   console.log("Path:", path);
-  switch (path) {
+
+  // Remove the stage name from the path
+  const cleanPath = path.replace(/^\/[^/]+/, "");
+  console.log("Clean Path:", cleanPath);
+
+  switch (cleanPath) {
     case "/":
+    case "/sourcelambda":
       return {
         statusCode: 200,
         body: JSON.stringify({ message: "Hello, World!" }),
