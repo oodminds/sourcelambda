@@ -1,7 +1,11 @@
 // index.js
 
 exports.handler = async (event) => {
-  const path = event.path || "/";
+  console.log("Event:", JSON.stringify(event, null, 2));
+  console.log("Path:", path);
+
+  const path = event.rawPath || event.path || "/";
+  console.log(event.rawPath);
 
   switch (path) {
     case "/":
