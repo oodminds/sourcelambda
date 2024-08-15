@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,13 +18,14 @@ jobs:
         with:
           node-version: "18"
 
-      # - name: Install dependencies (Remove this if not needed)
-      #   run: npm install
+      # Install only dev dependencies (for testing purposes)
+      - name: Install Jest (for testing)
+        run: npm install --only=dev
 
       - name: Run Tests
         run: npm test
 
-      - name: Zip Lambda function
+      - name: Package Lambda Function
         run: zip -r function.zip .
 
       - name: Deploy to Test Lambda Function
