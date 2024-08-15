@@ -50,6 +50,9 @@ jobs:
             --zip-file fileb://function.zip \
             --region eu-north-1
 
+      - name: Wait for Lambda update to complete
+        run: sleep 10
+
       - name: Update Lambda Function Configuration
         if: success() # Only update configuration if deployment succeeds
         env:
