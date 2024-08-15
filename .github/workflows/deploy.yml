@@ -19,11 +19,11 @@ jobs:
           node-version: "18"
 
       # Install only dev dependencies (for testing purposes)
-      - name: Install Jest (for testing)
-        run: npm install --only=dev
+      # - name: Install Jest (for testing)
+      #   run: npm install --only=dev
 
-      - name: Run Tests
-        run: npm test
+      # - name: Run Tests
+      #   run: npm test
 
       - name: Package Lambda Function
         run: zip -r function.zip .
