@@ -16,19 +16,19 @@ exports.handler = async (event) => {
     case "lite":
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "Lite version activated" }),
+        body: JSON.stringify({ message: "Lite category" }),
       };
 
     case "advance":
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "Advanced version activated" }),
+        body: JSON.stringify({ message: "Advanced category" }),
       };
 
     case "dynamic":
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "Dynamic version activated" }),
+        body: JSON.stringify({ message: "Dynamic category" }),
       };
 
     default:
