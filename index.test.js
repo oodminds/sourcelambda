@@ -8,7 +8,7 @@ describe("Lambda Function Tests", () => {
     const result = await handler(event);
 
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body).message).toBe("Lite version activated");
+    expect(JSON.parse(result.body).message).toBe("Lite category");
   });
 
   test("Advance category returns correct message", async () => {
@@ -18,7 +18,7 @@ describe("Lambda Function Tests", () => {
     const result = await handler(event);
 
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body).message).toBe("Advanced version activated");
+    expect(JSON.parse(result.body).message).toBe("Advanced category");
   });
 
   test("Dynamic category returns correct message", async () => {
@@ -28,7 +28,7 @@ describe("Lambda Function Tests", () => {
     const result = await handler(event);
 
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body).message).toBe("Dynamic version activated");
+    expect(JSON.parse(result.body).message).toBe("Dynamic category");
   });
 
   test("Invalid category returns 400", async () => {
