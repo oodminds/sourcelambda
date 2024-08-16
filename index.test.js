@@ -1,37 +1,53 @@
-// index.test.js
-
 const { handler } = require("./index");
 
 describe("Lambda Function Tests", () => {
-  test("Default route returns Hello, World!", async () => {
-    const event = { path: "/" };
+  test("Lite category returns correct message", async () => {
+    const event = {
+      body: JSON.stringify({ category: "lite" }),
+    };
     const result = await handler(event);
 
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body).message).toBe("Hello, World!");
+    expect(JSON.parse(result.body).message).toBe("Lite version activated");
   });
 
-  test("Route /hello returns Hello, Lambda!", async () => {
-    const event = { path: "/hello" };
+  test("Advance category returns correct message", async () => {
+    const event = {
+      body: JSON.stringify({ category: "advance" }),
+    };
     const result = await handler(event);
 
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body).message).toBe("Hello, Lambda!");
+    expect(JSON.parse(result.body).message).toBe("Advanced version activated");
   });
 
-  test("Route /goodbye returns Goodbye, Lambda!", async () => {
-    const event = { path: "/goodbye" };
+  test("Dynamic category returns correct message", async () => {
+    const event = {
+      body: JSON.stringify({ category: "dynamic" }),
+    };
     const result = await handler(event);
 
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body).message).toBe("Goodbye, Lambda!");
+    expect(JSON.parse(result.body).message).toBe("Dynamic version activated");
   });
 
-  test("Unknown route returns 404", async () => {
-    const event = { path: "/unknown" };
+  test("Invalid category returns 400", async () => {
+    const event = {
+      body: JSON.stringify({ category: "invalid" }),
+    };
     const result = await handler(event);
 
-    expect(result.statusCode).toBe(404);
-    expect(JSON.parse(result.body).message).toBe("Not Found");
+    expect(result.statusCode).toBe(400);
+    expect(JSON.parse(result.body).message).toBe("Invalid category");
+  });
+
+  test("Invalid JSON body returns 400", async () => {
+    const event = {
+      body: "Not a JSON",
+    };
+    const result = await handler(event);
+
+    expect(result.statusCode).toBe(400);
+    expect(JSON.parse(result.body).message).toBe("Invalid request body");
   });
 });

@@ -1,36 +1,40 @@
 exports.handler = async (event) => {
-  // Extract the path from the event object
-  const path = event.path || "/";
-  console.log("Path:", path);
+  let body;
+  try {
+    body = JSON.parse(event.body);
+  } catch (error) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: "Invalid request body" }),
+    };
+  }
 
-  // Remove the stage name from the path
-  const cleanPath = path.replace(/^\/[^/]+/, "");
-  console.log("Clean Path:", cleanPath);
+  // Extract the category from the request body
+  const category = body.category;
 
-  switch (cleanPath) {
-    case "/":
-    case "/sourcelambda":
+  switch (category) {
+    case "lite":
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "Hello, World!" }),
+        body: JSON.stringify({ message: "Lite version activated" }),
       };
 
-    case "/hello":
+    case "advance":
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "Hello, Lambda!" }),
+        body: JSON.stringify({ message: "Advanced version activated" }),
       };
 
-    case "/goodbye":
+    case "dynamic":
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "Goodbye, Lambda!" }),
+        body: JSON.stringify({ message: "Dynamic version activated" }),
       };
 
     default:
       return {
-        statusCode: 404,
-        body: JSON.stringify({ message: "Not Found" }),
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid category" }),
       };
   }
 };
