@@ -18,43 +18,46 @@ jobs:
         with:
           node-version: "18"
 
-      # Install only dev dependencies (for testing purposes)
-      # - name: Install Jest (for testing)
-      #   run: npm install --only=dev
+      - name: Install dependencies for test Lambda
+        run: npm install
 
-      # - name: Run Tests
-      #   run: npm test
+      - name: Run Tests
+        run: npm test
 
-      - name: Package Lambda Function
-        run: zip -r function.zip .
+      - name: Package Test Lambda Function
+        run: zip -r test_function.zip .
 
       - name: Deploy to Test Lambda Function
-        if: success() # Only deploy if tests pass
+        if: success()
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws lambda update-function-code \
             --function-name sourcelambdatestcases \
-            --zip-file fileb://function.zip \
+            --zip-file fileb://test_function.zip \
             --region eu-north-1
 
+      - name: Package Source Lambda Function
+        run: zip -r source_function.zip index.js # Add any other necessary files
+
       - name: Deploy to Production Lambda
-        if: success() # Only deploy if tests and staging pass
+        if: success()
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws lambda update-function-code \
             --function-name sourcelambda \
-            --zip-file fileb://function.zip \
-            --region eu-north-1
+            --zip-file fileb://source_function.zip \
+            --region eu-north-1 \
+            --publish
 
       - name: Wait for Lambda update to complete
         run: sleep 10
 
       - name: Update Lambda Function Configuration
-        if: success() # Only update configuration if deployment succeeds
+        if: success()
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
